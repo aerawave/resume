@@ -1,0 +1,14 @@
+---
+import type { Certification } from "@/data/data";
+
+type Props = {
+    certification: Certification;
+};
+
+const { certification } = Astro.props as Props;
+---
+
+<section class="certification">
+    <h3>{certification.name}</h3>
+    <span>{certification.date}</span>
+</section>

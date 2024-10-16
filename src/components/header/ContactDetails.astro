@@ -1,0 +1,29 @@
+---
+import type { ResumeData } from "@/data/data";
+
+type Props = {
+    data: ResumeData;
+};
+
+const { data } = Astro.props as Props;
+---
+
+<section class="contact">
+    <span class="location">{data.location}</span>
+    <a href={`tel:${data.phone}`} class="phone">
+        {data.phone}
+    </a>
+    <a href={`mailto:${data.email}`} class="email">
+        {data.email}
+    </a>
+</section>
+
+<style>
+    .contact {
+        @apply flex flex-col gap-1 text-sm text-gray-500;
+
+        & > .location {
+            @apply text-gray-950;
+        }
+    }
+</style>

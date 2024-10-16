@@ -1,0 +1,54 @@
+---
+import type { ResumeData } from "@/data/data";
+import LinkA from "../LinkA.astro";
+
+type props = {
+    data: ResumeData;
+};
+
+const { data } = Astro.props as props;
+
+const links = data.links.filter((link) => Boolean(link.prettyUrl));
+
+const first_link = links[0];
+const rest_of_links = links.slice(1);
+---
+
+<section class="name-and-title">
+    <h1 class="name">{data.name}</h1>
+    <h2 class="title">{data.title}</h2>
+    {
+        links.length > 0 && (
+            <div class="links">
+                <LinkA link={first_link} />
+                {rest_of_links.map((link) => (
+                    <Fragment>
+                        <span class="separator">|</span>
+                        <LinkA link={link} />
+                    </Fragment>
+                ))}
+            </div>
+        )
+    }
+</section>
+
+<style>
+    .name-and-title {
+        @apply flex flex-col gap-1;
+
+        & > .name {
+            @apply flex flex-col text-2xl font-bold text-gray-950;
+        }
+
+        & > .title {
+            @apply text-sm text-gray-500;
+        }
+        & > .links {
+            @apply flex flex-row gap-0.5;
+
+            & > a {
+                @apply text-sm;
+            }
+        }
+    }
+</style>

@@ -1,0 +1,20 @@
+---
+import type { Certification } from "@/data/data";
+import CertificationsListItem from "./CertificationsListItem.astro";
+
+type Props = {
+    certifications: Certification[];
+};
+
+const { certifications } = Astro.props as Props;
+---
+
+<section class="certifications">
+    <h2>Certifications</h2>
+    <hr />
+    {
+        certifications.map((certification) => (
+            <CertificationsListItem {certification} />
+        ))
+    }
+</section>

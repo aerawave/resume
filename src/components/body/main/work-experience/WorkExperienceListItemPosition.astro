@@ -1,0 +1,28 @@
+---
+import type { WorkExperiencePosition } from "@/data/data";
+import Reactor from "@/components/Reactor";
+
+type Props = {
+    position: WorkExperiencePosition;
+};
+
+const { position } = Astro.props as Props;
+
+console.log(position.points);
+---
+
+<section class="position">
+    <div class="title-and-dates">
+        <h4 class="title">{position.title}</h4>
+        <span class="dates">{position.start} &ndash; {position.end}</span>
+    </div>
+    <ul class="points">
+        {
+            position.points.map((point) => (
+                <li>
+                    <Reactor component={point} />
+                </li>
+            ))
+        }
+    </ul>
+</section>

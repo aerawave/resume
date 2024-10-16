@@ -1,0 +1,22 @@
+---
+import type { WorkExperienceEntry } from "@/data/data";
+import WorkExperienceListItemPosition from "./WorkExperienceListItemPosition.astro";
+
+type Props = {
+    experience: WorkExperienceEntry;
+};
+
+const { experience } = Astro.props as Props;
+---
+
+<section class="work-experience-item">
+    <div class="name-and-location">
+        <h3 class="name">{experience.organization}</h3>
+        <span class="location">{experience.location}</span>
+    </div>
+    {
+        experience.positions.map((position) => (
+            <WorkExperienceListItemPosition {position} />
+        ))
+    }
+</section>

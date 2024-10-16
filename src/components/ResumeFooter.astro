@@ -1,0 +1,13 @@
+---
+import type { ResumeData } from "@/data/data";
+
+type Props = {
+    data: ResumeData;
+};
+
+const { data } = Astro.props as Props;
+---
+
+<footer>
+    <span class="message">Resume built with Astro by Joshua Kinzer :) </span>
+</footer>

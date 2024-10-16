@@ -1,0 +1,42 @@
+---
+import Resume from "@/components/Resume.astro";
+import type { ResumeData } from "@/data/data";
+import fs from "fs/promises";
+import path from "path";
+
+export async function getStaticPaths() {
+    const entries = await Promise.all(
+        (await fs.readdir("./src/data"))
+            .filter((file) => file.endsWith(".tsx"))
+            .map((file) => path.parse(file).name)
+    );
+
+    return entries.map((entry) => ({
+        params: { resume: entry },
+        props: { resume: entry },
+    }));
+}
+
+type Props = {
+    resume: string;
+};
+
+const { resume } = Astro.props as Props;
+
+const { resume_data: data } = (await import(`/src/data/${resume}.tsx`)) as {
+    resume_data: ResumeData;
+};
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Astro Resumes</title>
+    </head>
+    <body>
+        <Resume {data} />
+    </body>
+</html>

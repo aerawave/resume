@@ -1,0 +1,11 @@
+---
+import type { Link } from "@/data/data";
+
+type Props = {
+    link: Link;
+};
+
+const { link } = Astro.props as Props;
+---
+
+<a href={link.url}>{link.prettyUrl || link.url}</a>

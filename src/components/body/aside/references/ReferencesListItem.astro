@@ -1,0 +1,30 @@
+---
+import type { Reference } from "@/data/data";
+
+type Props = {
+    reference: Reference;
+};
+
+const { reference } = Astro.props as Props;
+---
+
+<section class="reference">
+    <h3>
+        <span class="name">{reference.name}</span>
+        {reference.company && <span class="company">{reference.company}</span>}
+    </h3>
+    {
+        reference.phone && (
+            <a class="phone" href={`tel:${reference.phone}`}>
+                {reference.phone}
+            </a>
+        )
+    }
+    {
+        reference.email && (
+            <a class="email" href={`mailto:${reference.email}`}>
+                {reference.email}
+            </a>
+        )
+    }
+</section>

@@ -1,0 +1,27 @@
+---
+import type { DateString } from "@/data/data";
+
+type Props = {
+    start?: DateString;
+    end?: DateString;
+    class?: string;
+};
+
+const { start, end, class: className } = Astro.props as Props;
+---
+
+{
+    start || end ? (
+        <span class={className}>
+            {start && end ? (
+                <Fragment>
+                    {start} &ndash; {end}
+                </Fragment>
+            ) : end ? (
+                end
+            ) : start ? (
+                <Fragment>{start} &ndash; Present</Fragment>
+            ) : null}
+        </span>
+    ) : null
+}

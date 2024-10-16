@@ -1,0 +1,17 @@
+---
+import type { EducationEntry } from "@/data/data";
+import DateRange from "@/components/DateRange.astro";
+
+type Props = {
+    entry: EducationEntry;
+};
+
+const { entry } = Astro.props as Props;
+---
+
+<section class="education-item">
+    <h3>{entry.level} in {entry.field}</h3>
+    <span class="school">{entry.school.name}</span>
+    <span class="location">{entry.school.location}</span>
+    <DateRange class="dates" start={entry.start} end={entry.end} />
+</section>

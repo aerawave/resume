@@ -1,0 +1,22 @@
+---
+import type { References } from "@/data/data";
+import ReferencesListItem from "./ReferencesListItem.astro";
+
+type Props = {
+    references: References;
+};
+
+const { references } = Astro.props as Props;
+---
+
+<section class="references">
+    <h2>References</h2>
+    <hr />
+    {
+        typeof references === "string" ? (
+            <p>{references}</p>
+        ) : (
+            references.map((reference) => <ReferencesListItem {reference} />)
+        )
+    }
+</section>

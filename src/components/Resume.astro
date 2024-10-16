@@ -1,0 +1,19 @@
+---
+import "@/styles/resume.css";
+import type { ResumeData } from "@/data/data";
+import ResumeHeader from "./ResumeHeader.astro";
+import ResumeBody from "./ResumeBody.astro";
+import ResumeFooter from "./ResumeFooter.astro";
+
+type props = {
+    data: ResumeData;
+};
+
+const { data } = Astro.props as props;
+---
+
+<div class="resume">
+    <ResumeHeader {data} />
+    <ResumeBody {data} />
+    <ResumeFooter {data} />
+</div>

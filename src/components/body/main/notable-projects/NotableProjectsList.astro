@@ -1,0 +1,16 @@
+---
+import type { NotableProjectEntry } from "@/data/data";
+import NotableProjectsListItem from "./NotableProjectsListItem.astro";
+
+type Props = {
+    projects: NotableProjectEntry[];
+};
+
+const { projects } = Astro.props as Props;
+---
+
+<section class="notable-projects">
+    <h2>Notable Projects</h2>
+    <hr />
+    {projects.map((project) => <NotableProjectsListItem {project} />)}
+</section>

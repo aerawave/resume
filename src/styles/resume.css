@@ -1,0 +1,248 @@
+@media print {
+    a {
+        text-decoration-line: none;
+    }
+}
+
+.resume {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    & hr {
+        @apply border-gray-300 border-solid border w-10 rounded-full block;
+
+        &.full {
+            @apply w-full;
+        }
+    }
+
+    & a {
+        @apply text-blue-600 underline underline-offset-2;
+    }
+
+    & > header {
+        @apply flex flex-row justify-between border-b-gray-300 border-b-2 border-solid pb-2 mb-1;
+
+        & > .name-and-title {
+            @apply flex flex-col gap-1;
+
+            & > .name {
+                @apply flex flex-col text-2xl font-bold text-gray-950;
+            }
+
+            & > .title {
+                @apply text-sm text-gray-500;
+            }
+            & > .links {
+                @apply flex flex-row gap-0.5;
+
+                & > a {
+                    @apply text-sm;
+                }
+            }
+        }
+
+        & > .contact {
+            @apply flex flex-col gap-1 text-sm text-gray-500;
+
+            & > .location {
+                @apply text-gray-950;
+            }
+        }
+    }
+
+    & > footer {
+        @apply flex flex-row justify-center;
+
+        & > .message {
+            @apply text-sm text-gray-700 italic;
+        }
+    }
+
+    & > .body {
+        @apply flex flex-row gap-0 w-full;
+
+        & section {
+            & > h2 {
+                @apply font-bold text-gray-950 uppercase;
+                letter-spacing: 0.1rem;
+            }
+        }
+
+        & > main {
+            @apply flex flex-col gap-2 border-r-gray-300 border-r-2 border-solid p-4;
+
+            & > .summary {
+                & > p {
+                    @apply text-sm mx-2 indent-8 text-justify;
+                }
+            }
+
+            & > .work-experience {
+                & > .work-experience-item {
+                    @apply mx-2;
+
+                    & > .name-and-location {
+                        & > .name {
+                            @apply font-bold text-gray-950 inline-block;
+                        }
+                        & > .location {
+                            @apply text-xs text-gray-600 inline-block;
+                        }
+                    }
+
+                    & > .position {
+                        @apply ml-4;
+
+                        & > .title-and-dates {
+                            @apply flex flex-row justify-between items-center;
+
+                            & > .title {
+                                @apply font-bold;
+                            }
+                            & > .dates {
+                                @apply text-xs italic;
+                            }
+                        }
+
+                        & > .points {
+                            @apply ml-2;
+
+                            list-style-type: disc;
+
+                            & > li {
+                                @apply ml-4 text-xs;
+
+                                & > .skill {
+                                    @apply font-bold underline underline-offset-2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            & > .notable-projects {
+                & > .notable-project {
+                    @apply mx-2;
+
+                    & > h3 {
+                        @apply font-bold;
+                    }
+
+                    & > .description {
+                        @apply text-xs italic;
+                    }
+
+                    & > .points {
+                        @apply ml-2;
+
+                        list-style-type: disc;
+
+                        & > li {
+                            @apply ml-4 text-xs;
+
+                            & > .skill {
+                                @apply font-bold underline underline-offset-2;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        & > aside {
+            @apply flex flex-col gap-2 flex-shrink-0 w-1/3 p-4;
+
+            & > .education > .education-item {
+                @apply flex flex-col gap-0;
+
+                & > h3 {
+                    @apply text-sm font-bold text-gray-800;
+                }
+
+                & > span {
+                    @apply text-xs text-gray-800;
+                }
+            }
+
+            & > .skills {
+                & > p {
+                    @apply text-sm;
+                    gap: 0 0.75rem;
+                }
+                & > .skill {
+                    @apply flex flex-row justify-between items-center;
+
+                    & > h3 {
+                        @apply text-sm text-gray-800;
+                    }
+
+                    & > .level {
+                        @apply w-3/5 h-2 rounded-full overflow-clip flex flex-row gap-0.5;
+
+                        & > div {
+                            @apply h-full flex-grow;
+
+                            &.empty {
+                                @apply bg-gray-200;
+                            }
+
+                            &.novice {
+                                background-color: hsl(13, 83%, 50%);
+                            }
+                            &.beginner {
+                                background-color: hsl(25, 85%, 50%);
+                            }
+                            &.skillful {
+                                background-color: hsl(47, 82%, 40%);
+                            }
+                            &.experienced {
+                                background-color: hsl(72, 62%, 40%);
+                            }
+                            &.expert {
+                                background-color: hsl(97, 46%, 50%);
+                            }
+                        }
+                    }
+                }
+            }
+
+            & > .languages > .language {
+                @apply text-sm flex flex-row justify-between items-center;
+            }
+
+            & > .certifications > .certification {
+                @apply flex flex-col gap-0;
+
+                & > h3 {
+                    @apply text-sm font-bold text-gray-800;
+                }
+
+                & > span {
+                    @apply text-xs text-gray-800;
+                }
+            }
+
+            & > .links {
+                @apply flex flex-col gap-1;
+            }
+
+            & > .references > .reference {
+                @apply flex flex-col items-start;
+                & > h3 {
+                    & > .name {
+                        @apply font-bold;
+                    }
+                    & > .company {
+                        @apply text-gray-700;
+                        &::before {
+                            content: "at ( ";
+                        }
+                        &::after {
+                            content: " )";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
