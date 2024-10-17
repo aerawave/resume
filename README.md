@@ -17,3 +17,4 @@ If for some you want to use this yourself, you can do so by following these step
 3. Run `npm run dev`
 4. Create a file in `src/resumes` with the name of your resume being something like `firstName-lastName.tsx` (this will make the slug `firstName-lastName`)
 5. From your resume file, export a `default` value with a `ResumeData` type (from `src/data/resume-data.ts`).
+6. Once you have done this, a link to your resume should appear in the list of resumes on the home page. You can either click that link, or go to the address `http://localhost:4321/resumes/[slug]` to view your resume. Just replace `[slug]` with the slug of your resume.
