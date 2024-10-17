@@ -20,22 +20,64 @@ const { data } = Astro.props as Props;
 <section class="body">
     <main>
         <ProfessionalSummary summary={data.summary} />
-        <hr class="full" />
-        <WorkExperienceList experience={data.experience} />
-        <hr class="full" />
-        <NotableProjectsList projects={data.notableProjects} />
+        {
+            data.experience && (
+                <Fragment>
+                    <hr class="full" />
+                    <WorkExperienceList experience={data.experience} />
+                </Fragment>
+            )
+        }
+        {
+            data.notableProjects && (
+                <Fragment>
+                    <hr class="full" />
+                    <NotableProjectsList projects={data.notableProjects} />
+                </Fragment>
+            )
+        }
     </main>
     <aside>
-        <EducationList education={data.education} />
-        <hr class="full" />
-        <SkillsList skills={data.skills} />
-        <hr class="full" />
+        {
+            data.education && (
+                <Fragment>
+                    <EducationList education={data.education} />
+                    <hr class="full" />
+                </Fragment>
+            )
+        }
+        {
+            data.skills && (
+                <Fragment>
+                    <SkillsList skills={data.skills} />
+                    <hr class="full" />
+                </Fragment>
+            )
+        }
         <LanguagesList languages={data.languages} />
-        <hr class="full" />
-        <CertificationsList certifications={data.certifications} />
-        <hr class="full" />
-        <LinksList links={data.links} />
-        <hr class="full" />
-        <ReferencesList references={data.references} />
+        {
+            data.certifications && (
+                <Fragment>
+                    <hr class="full" />
+                    <CertificationsList certifications={data.certifications} />
+                </Fragment>
+            )
+        }
+        {
+            data.links && (
+                <Fragment>
+                    <hr class="full" />
+                    <LinksList links={data.links} />
+                </Fragment>
+            )
+        }
+        {
+            data.references && (
+                <Fragment>
+                    <hr class="full" />
+                    <ReferencesList references={data.references} />
+                </Fragment>
+            )
+        }
     </aside>
 </section>

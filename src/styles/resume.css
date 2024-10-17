@@ -1,10 +1,19 @@
 @media print {
+    .resume {
+        @apply h-full;
+    }
     a {
         text-decoration-line: none;
     }
 }
 
+html,
+body {
+    @apply h-full;
+}
+
 .resume {
+    @apply flex flex-col;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     & hr {
         @apply border-gray-300 border-solid border w-10 rounded-full block;
@@ -58,7 +67,7 @@
     }
 
     & > .body {
-        @apply flex flex-row gap-0 w-full;
+        @apply flex flex-row gap-0 w-full flex-grow;
 
         & section {
             & > h2 {
@@ -68,7 +77,7 @@
         }
 
         & > main {
-            @apply flex flex-col gap-2 border-r-gray-300 border-r-2 border-solid p-4;
+            @apply flex flex-col gap-2 border-r-gray-300 border-r-2 border-solid w-2/3 p-4;
 
             & > .summary {
                 & > p {
