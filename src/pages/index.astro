@@ -1,23 +1,46 @@
 ---
-import type { ResumeData } from "@/data/data";
-import fs from "fs/promises";
+import type { ResumeData } from "@/data/resume-data";
+import type { InferGetStaticPropsType } from "astro";
+import fs, { existsSync as fsExists } from "fs";
 import path from "path";
 
-const entries = await Promise.all(
-    (await fs.readdir("./src/data"))
+type FileEntry = {
+    file: string;
+    name: string;
+};
+
+async function getEntries() {
+    if (!fsExists("./src/resumes")) {
+        return [];
+    }
+    const files = fs
+        .readdirSync("./src/resumes")
         .filter((file) => file.endsWith(".tsx"))
-        .map((file) => path.parse(file).name)
-        .map(async (file) => {
-            const { resume_data: data } = (await import(
-                `../data/${file}.tsx`
-            )) as { resume_data: ResumeData };
-            console.log(data);
+        .map((file) => {
+            const file_path = path.parse(file);
             return {
-                file,
-                name: data.name,
+                name: file_path.name,
+                ext: file_path.ext,
             };
+        });
+    const entries = await Promise.all(
+        files.map(async (file) => {
+            const { default: data } = (
+                file.ext === ".ts"
+                    ? await import(`../resumes/${file.name}.ts`)
+                    : await import(`../resumes/${file.name}.tsx`)
+            ) as { default: ResumeData };
+            return {
+                file: file.name,
+                name: data.name,
+            } as FileEntry;
         })
-);
+    );
+
+    return entries;
+}
+
+const entries = await getEntries();
 ---
 
 <html lang="en">
@@ -30,14 +53,44 @@ const entries = await Promise.all(
     </head>
     <body>
         <h1>Resumes</h1>
-        <ul>
-            {
-                entries.map((entry) => (
-                    <li>
-                        <a href={`/${entry.file}`}>{entry.name}</a>
-                    </li>
-                ))
-            }
-        </ul>
+        {
+            entries.length > 0 ? (
+                <ul>
+                    {entries.map((entry) => (
+                        <li>
+                            <a href={`/${entry.file}`}>{entry.name}</a>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p class="no-resumes">
+                    No resumes found. Make sure to add some under{" "}
+                    <code>src/resumes</code>!
+                </p>
+            )
+        }
     </body>
 </html>
+<style>
+    body {
+        @apply p-2;
+        h1 {
+            @apply text-2xl font-bold text-gray-950;
+        }
+        ul {
+            @apply list-disc list-inside;
+            & > li {
+                & > a {
+                    @apply text-blue-600 underline underline-offset-2;
+                }
+            }
+        }
+        .no-resumes {
+            @apply text-gray-600 italic;
+
+            code {
+                @apply px-1 bg-gray-600 rounded-sm text-white;
+            }
+        }
+    }
+</style>

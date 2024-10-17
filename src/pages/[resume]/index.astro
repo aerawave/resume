@@ -1,12 +1,16 @@
 ---
 import Resume from "@/components/Resume.astro";
-import type { ResumeData } from "@/data/data";
+import type { ResumeData } from "@/data/resume-data";
 import fs from "fs/promises";
+import { existsSync as fsExists } from "fs";
 import path from "path";
 
 export async function getStaticPaths() {
+    if (!fsExists("./src/resumes")) {
+        return [];
+    }
     const entries = await Promise.all(
-        (await fs.readdir("./src/data"))
+        (await fs.readdir("./src/resumes"))
             .filter((file) => file.endsWith(".tsx"))
             .map((file) => path.parse(file).name)
     );
@@ -23,9 +27,11 @@ type Props = {
 
 const { resume } = Astro.props as Props;
 
-const { resume_data: data } = (await import(`/src/data/${resume}.tsx`)) as {
-    resume_data: ResumeData;
+const { default: data } = (await import(`/src/resumes/${resume}.tsx`)) as {
+    default: ResumeData;
 };
+
+const year = new Date().getFullYear();
 ---
 
 <html lang="en">
@@ -34,7 +40,7 @@ const { resume_data: data } = (await import(`/src/data/${resume}.tsx`)) as {
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>Astro Resumes</title>
+        <title>{year} Resume - {data.name}</title>
     </head>
     <body>
         <Resume {data} />
