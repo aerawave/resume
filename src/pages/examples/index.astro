@@ -1,0 +1,7 @@
+---
+import "../../styles/resume.css";
+import dummy_resume_data from "@/data/dummy-resume-data";
+
+const random_index = Math.floor(Math.random() * dummy_resume_data.length);
+return Astro.redirect(`/examples/${random_index}`);
+---

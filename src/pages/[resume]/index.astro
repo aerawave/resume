@@ -1,9 +1,11 @@
 ---
+import "../../styles/resume.css";
 import Resume from "@/components/Resume.astro";
 import type { ResumeData } from "@/data/resume-data";
 import fs from "fs/promises";
 import { existsSync as fsExists } from "fs";
 import path from "path";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
     if (!fsExists("./src/resumes")) {
@@ -31,18 +33,9 @@ const { default: data } = (await import(`/src/resumes/${resume}.tsx`)) as {
     default: ResumeData;
 };
 
-const year = new Date().getFullYear();
+const title = `${new Date().getFullYear()} Resume - ${data.name}`;
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>{year} Resume - {data.name}</title>
-    </head>
-    <body>
-        <Resume {data} />
-    </body>
-</html>
+<BaseLayout {title}>
+    <Resume {data} />
+</BaseLayout>

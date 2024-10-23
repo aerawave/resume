@@ -1,5 +1,3 @@
-import React from "react";
-
-export default function Reacter(props: { component: React.ReactNode }) {
-    return <>{props.component}</>;
+export default function Reactor({ component }: { component: React.ReactNode }) {
+    return <>{component}</>;
 }

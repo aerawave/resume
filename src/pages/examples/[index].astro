@@ -1,0 +1,249 @@
+---
+import "../../styles/resume.css";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Resume from "@/components/Resume.astro";
+import dummy_resume_data, {
+    DUMMY_DATA_DISCLAIMER,
+} from "@/data/dummy-resume-data";
+import type { ResumeData } from "@/data/resume-data";
+
+type Params = {
+    index: string;
+};
+
+type Props = {
+    resume: ResumeData;
+};
+
+export function getStaticPaths() {
+    return dummy_resume_data.map((resume, index) => ({
+        params: { index: index.toString() },
+        props: { resume },
+    }));
+}
+
+const { index: index_str } = Astro.params as Params;
+const index = parseInt(index_str);
+const { resume } = Astro.props as Props;
+
+const title = `${new Date().getFullYear()} Resume - ${resume.name}`;
+---
+
+<BaseLayout {title}>
+    <div class="disclaimer">
+        <h1>{DUMMY_DATA_DISCLAIMER}</h1>
+    </div>
+    <div class="prev-next">
+        <astro-pause-button
+            ><button id="pause-button">Pause</button></astro-pause-button
+        >
+        {
+            index < dummy_resume_data.length - 1 ? (
+                <a
+                    class="next-link"
+                    href={`/examples/${index + 1}?paused=true`}
+                >
+                    Next
+                </a>
+            ) : (
+                <a class="next-link" href={`/examples/0?paused=true`}>
+                    Next
+                </a>
+            )
+        }
+    </div>
+    <div class="paused-status">
+        <p>
+            Page is paused and will not cycle to next resume. Click the resume
+            button above to resume.
+        </p>
+    </div>
+    <astro-resume-roller data-count={dummy_resume_data.length}
+    ></astro-resume-roller>
+    <div class="resume-box" transition:animate="slide">
+        <Resume data={resume} />
+    </div>
+</BaseLayout>
+
+<style is:global>
+    body {
+        @apply justify-start mt-2;
+    }
+    .prev-next {
+        @apply flex flex-row justify-center items-center gap-4 my-4;
+
+        @media print {
+            display: none;
+        }
+
+        a,
+        button {
+            @apply bg-blue-700 py-1 px-2 rounded-md text-white;
+
+            &:is(a):not([href]) {
+                @apply bg-gray-500 cursor-default;
+            }
+
+            &:is(a[href]),
+            &:is(button) {
+                @apply cursor-pointer;
+                &:hover,
+                &:focus {
+                    @apply bg-blue-500;
+                }
+            }
+        }
+
+        @media screen {
+            &:has(button#resume-button) + .paused-status {
+                height: 2.5rem;
+            }
+        }
+    }
+
+    .paused-status {
+        @apply text-red-500 font-bold text-center overflow-y-clip;
+        height: 0;
+        transition-property: height;
+        transition-duration: 0.5s;
+    }
+
+    @media print {
+        .resume-box {
+            @apply h-full;
+        }
+    }
+
+    .disclaimer {
+        @apply flex flex-row justify-center w-full;
+        @media print {
+            display: none;
+        }
+        h1 {
+            @apply text-center text-2xl font-bold text-gray-950 bg-red-600/10 p-4 rounded-xl border-x-4 border-x-red-600/50 w-3/5 text-wrap;
+        }
+    }
+</style>
+
+<script>
+    import { navigate } from "astro:transitions/client";
+
+    let resume_count = 0;
+    let paused = new URLSearchParams(location.search).has("paused");
+    let interval = setTimeout(() => {}, 0);
+
+    type PauseState = "paused" | "unpaused";
+
+    function setPauseState(
+        state: PauseState,
+        button?: HTMLButtonElement
+    ): void {
+        if (!button) {
+            button = document.querySelector(
+                "astro-pause-button button"
+            )! as HTMLButtonElement;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+
+        switch (state) {
+            case "paused":
+                paused = true;
+                params.set("paused", "true");
+                break;
+            case "unpaused":
+                paused = false;
+                params.delete("paused");
+                break;
+        }
+
+        const params_str = params.toString();
+
+        if (params_str.length > 0) {
+            history.replaceState(
+                null,
+                "",
+                `${location.pathname}?${params_str}`
+            );
+        } else {
+            history.replaceState(null, "", location.pathname);
+        }
+
+        button.innerText = paused ? "Resume" : "Pause";
+        button.setAttribute("id", paused ? "resume-button" : "pause-button");
+        button.blur();
+    }
+
+    function togglePauseState(button: HTMLButtonElement): void {
+        if (!paused) {
+            setPauseState("paused", button);
+        } else {
+            setPauseState("unpaused", button);
+        }
+    }
+
+    document.querySelector(".next-link")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const element = e.target as HTMLAnchorElement;
+
+        const index_str = parseInt(element.href.split("/").pop() ?? "");
+        const index = isNaN(index_str) ? 0 : index_str;
+
+        let next_index = index;
+
+        while (next_index === index) {
+            next_index = Math.floor(Math.random() * resume_count);
+        }
+        console.log(next_index);
+        clearInterval(interval);
+
+        paused = true;
+        navigate(`/examples/${next_index}?paused=true`);
+    });
+
+    class ResumeRoller extends HTMLElement {
+        connectedCallback() {
+            if (!("count" in this.dataset)) {
+                throw new Error("data-count is not defined");
+            }
+            const count = parseInt(this.dataset.count ?? "");
+            if (isNaN(count)) {
+                throw new Error("data-count is not a number");
+            }
+
+            resume_count = count;
+
+            interval = setInterval(() => {
+                if (paused) {
+                    return;
+                }
+                navigate(`/examples/${Math.floor(Math.random() * count)}`);
+                clearInterval(interval);
+            }, 5000);
+        }
+    }
+
+    class PauseButton extends HTMLElement {
+        connectedCallback() {
+            clearInterval(interval);
+
+            const button = this.querySelector("button");
+            if (!button) {
+                return;
+            }
+
+            button.innerText = paused ? "Resume" : "Pause";
+            button.setAttribute(
+                "id",
+                paused ? "resume-button" : "pause-button"
+            );
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                togglePauseState(button);
+            });
+        }
+    }
+
+    customElements.define("astro-resume-roller", ResumeRoller);
+    customElements.define("astro-pause-button", PauseButton);
+</script>

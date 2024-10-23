@@ -9,21 +9,20 @@ const { data } = Astro.props as Props;
 ---
 
 <section class="contact">
-    <span class="location">{data.location}</span>
-    <a href={`tel:${data.phone}`} class="phone">
-        {data.phone}
-    </a>
-    <a href={`mailto:${data.email}`} class="email">
-        {data.email}
-    </a>
+    <div class="location">
+        <i class="fas fa-map"></i>
+        <span>{data.location}</span>
+    </div>
+    <div class="phone">
+        <i class="fas fa-phone"></i>
+        <a href={`tel:${data.phone}`}>
+            {data.phone}
+        </a>
+    </div>
+    <div class="email">
+        <i class="fas fa-envelope"></i>
+        <a href={`mailto:${data.email}`}>
+            {data.email}
+        </a>
+    </div>
 </section>
-
-<style>
-    .contact {
-        @apply flex flex-col gap-1 text-sm text-gray-500;
-
-        & > .location {
-            @apply text-gray-950;
-        }
-    }
-</style>

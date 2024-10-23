@@ -1,5 +1,6 @@
 ---
 import type { ResumeData } from "@/data/resume-data";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import type { InferGetStaticPropsType } from "astro";
 import fs, { existsSync as fsExists } from "fs";
 import path from "path";
@@ -43,37 +44,33 @@ async function getEntries() {
 const entries = await getEntries();
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>Astro Resumes</title>
-    </head>
-    <body>
-        <h1>Resumes</h1>
-        {
-            entries.length > 0 ? (
-                <ul>
-                    {entries.map((entry) => (
-                        <li>
-                            <a href={`/${entry.file}`}>{entry.name}</a>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p class="no-resumes">
-                    No resumes found. Make sure to add some under{" "}
-                    <code>src/resumes</code>!
-                </p>
-            )
-        }
-    </body>
-</html>
+<BaseLayout>
+    <h1>Built-in Resumes</h1>
+    <ul>
+        <li><a href="/examples">Example Resumes</a></li>
+    </ul>
+    <h1>Custom Resumes</h1>
+    {
+        entries.length > 0 ? (
+            <ul>
+                {entries.map((entry) => (
+                    <li>
+                        <a href={`/${entry.file}`}>{entry.name}</a>
+                    </li>
+                ))}
+            </ul>
+        ) : (
+            <p class="no-resumes">
+                No resumes found. Make sure to add some under{" "}
+                <code>src/resumes</code>!
+            </p>
+        )
+    }
+</BaseLayout>
+
 <style>
     body {
-        @apply p-2;
+        @apply p-2 items-start;
         h1 {
             @apply text-2xl font-bold text-gray-950;
         }

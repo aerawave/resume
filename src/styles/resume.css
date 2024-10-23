@@ -1,9 +1,18 @@
+.resume {
+    @apply h-full;
+}
 @media print {
-    .resume {
-        @apply h-full;
-    }
     a {
         text-decoration-line: none;
+    }
+}
+
+@media screen {
+    .resume {
+        @apply mx-auto border border-black rounded-sm p-12 overflow-clip;
+        max-width: 52.5rem;
+        max-height: 68rem;
+        aspect-ratio: 8.5 / 11;
     }
 }
 
@@ -41,16 +50,23 @@ body {
                 @apply text-sm text-gray-500;
             }
             & > .links {
-                @apply flex flex-row gap-0.5;
+                @apply flex flex-row gap-2;
 
-                & > a {
-                    @apply text-sm;
+                & > .link {
+                    @apply flex flex-row items-center gap-1;
+                    & > a {
+                        @apply text-sm;
+                    }
                 }
             }
         }
 
         & > .contact {
             @apply flex flex-col gap-1 text-sm text-gray-500;
+
+            & > div {
+                @apply flex flex-row gap-1 items-center;
+            }
 
             & > .location {
                 @apply text-gray-950;
@@ -89,8 +105,9 @@ body {
                 & > .work-experience-item {
                     @apply mx-2;
 
-                    & > .name-and-location {
-                        & > .name {
+                    & > .organization-and-location {
+                        @apply flex flex-row gap-2 items-center;
+                        & > .organization {
                             @apply font-bold text-gray-950 inline-block;
                         }
                         & > .location {
@@ -182,7 +199,7 @@ body {
                     @apply flex flex-row justify-between items-center;
 
                     & > h3 {
-                        @apply text-sm text-gray-800;
+                        @apply text-sm text-gray-800 text-nowrap max-w-20 overflow-clip;
                     }
 
                     & > .level {
@@ -233,23 +250,15 @@ body {
 
             & > .links {
                 @apply flex flex-col gap-1;
+                li {
+                    @apply flex flex-row gap-1 items-center;
+                }
             }
 
             & > .references > .reference {
                 @apply flex flex-col items-start;
                 & > h3 {
-                    & > .name {
-                        @apply font-bold;
-                    }
-                    & > .company {
-                        @apply text-gray-700;
-                        &::before {
-                            content: "at ( ";
-                        }
-                        &::after {
-                            content: " )";
-                        }
-                    }
+                    @apply font-bold;
                 }
             }
         }
