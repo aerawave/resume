@@ -99,6 +99,13 @@ const title = `${new Date().getFullYear()} Resume - ${resume.name}`;
                 height: 2.5rem;
             }
         }
+
+        @media print {
+            .paused-status {
+                height: 0;
+                display: none;
+            }
+        }
     }
 
     .paused-status {
@@ -110,7 +117,7 @@ const title = `${new Date().getFullYear()} Resume - ${resume.name}`;
 
     @media print {
         .resume-box {
-            @apply h-full;
+            height: calc(100vh - 0.5rem);
         }
     }
 
