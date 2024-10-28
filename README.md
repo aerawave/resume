@@ -6,6 +6,8 @@ If you were sent here by my resume, this is the source code used to render the r
 
 I host the application locally using `npm run dev`, which will have the homepage contain a list to all the resumes available in the `src/resumes` directory.
 
+There is also a roller for all the resumes available in the `src/data` directory. This will be made available on the homepage as well.
+
 The resumes are written in TypeScript, with some parts of it allowing React components.
 
 ## Running the application
